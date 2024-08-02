@@ -1,0 +1,395 @@
+/* Breadcrumbs */
+.breadcrumbs {
+  width: 100%;
+  height: 60px;
+  border-bottom: solid 1px #ebebeb;
+  margin-bottom: 79px;
+}
+.breadcrumbs ul li {
+  display: inline-block;
+  margin-right: 17px;
+}
+.breadcrumbs ul li.active a {
+  color: #b9b4c7;
+}
+.breadcrumbs ul li i {
+  margin-right: 17px;
+}
+.breadcrumbs ul li a {
+  color: #51545f;
+}
+
+/* Single Product Container */
+.single_product_container {
+  margin-top: 150px;
+  padding-bottom: 80px;
+  border-bottom: solid 1px #ebebeb;
+}
+
+/* Product Thumbnails */
+.single_product_thumbnails {
+  height: auto; /* Tự động điều chỉnh chiều cao dựa trên nội dung */
+  overflow-y: auto; /* Thêm thanh cuộn dọc nếu cần */
+}
+
+.single_product_thumbnails ul {
+  padding: 0; /* Bỏ padding của ul */
+  margin: 0; /* Bỏ margin của ul */
+  list-style-type: none; /* Bỏ dấu gạch đầu dòng của ul */
+}
+
+.single_product_thumbnails ul li {
+  width: 142px;
+  position: relative;
+  height: 142px; /* Chiều cao cố định cho ảnh nhỏ */
+  margin-bottom: 10px; /* Giảm khoảng cách giữa các ảnh nhỏ */
+  cursor: pointer;
+  border: 1px solid #ebebeb; /* Thêm border cho các ảnh nhỏ */
+}
+
+.single_product_thumbnails ul li.active,
+.single_product_thumbnails ul li:hover {
+  border: 1px solid #fe4c50; /* Border đỏ khi ảnh nhỏ được chọn hoặc hover */
+}
+
+.single_product_thumbnails ul li img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Đảm bảo ảnh nhỏ không bị biến dạng */
+}
+
+/* Product Images */
+.image_col {
+  padding-right: 30px;
+}
+/* Single Product Image */
+.single_product_image {
+	width:100%; /* Kích thước của phần tử chứa */
+	height: 100%; /* Kích thước của phần tử chứa */
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+
+	overflow: hidden; /* Đảm bảo phần tử không hiển thị phần ảnh vượt ra ngoài */
+  }
+  
+  .single_product_image_background{
+	background-size: cover; /* Đảm bảo ảnh lấp đầy toàn bộ phần tử */
+	background-repeat: no-repeat; /* Không lặp lại ảnh */
+	background-position: center; /* Căn giữa ảnh */
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+  }
+
+/* Product Details */
+.product_details {
+  width: 100%;
+}
+.product_details_title {
+  font-weight: 500;
+  line-height: 30px;
+}
+.product_details_title p {
+  margin-top: 12px;
+}
+.free_delivery {
+  background: #f5f5f5;
+  margin-top: 53px;
+}
+.free_delivery i {
+  display: inline-block;
+}
+.free_delivery span:last-child {
+  display: inline-block;
+  height: 40px;
+  line-height: 40px;
+  text-transform: uppercase;
+}
+.free_delivery span:first-child {
+  display: inline-block;
+  margin-right: 19px;
+  font-size: 16px;
+  transform: translateY(-1px);
+}
+.original_price {
+  font-weight: 500;
+  color: #b9b4c7;
+  text-decoration: line-through;
+  line-height: 30px;
+  margin-top: 21px;
+}
+.product_price-product-detail {
+  display: inline-block;
+  font-size: 24px;
+  color: #fe4c50;
+  font-weight: 500;
+  line-height: 30px;
+  margin-top: 2px;
+}
+.star_rating {
+  display: inline-block;
+  margin-left: 33px;
+}
+.star_rating li {
+  display: inline-block;
+  margin-right: -2px;
+  cursor: pointer;
+}
+.star_rating li i {
+  color: #fac451;
+}
+.product_color {
+  margin-top: 27px;
+}
+.product_color ul {
+  display: inline-block;
+  margin-left: 26px;
+}
+.product_color ul li {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 29px;
+  cursor: pointer;
+}
+
+/* Quantity Selector */
+.quantity {
+  width: 100%;
+  height: 40px;
+  margin-top: 23px;
+}
+.quantity_selector {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 132px;
+  height: 100%;
+  border: solid 1px #e5e5e5;
+  margin-left: 29px;
+}
+.quantity_selector span {
+  font-weight: 500;
+  color: #232530;
+}
+.plus,
+.minus {
+  padding-left: 14px;
+  padding-right: 14px;
+  cursor: pointer;
+}
+.plus:hover,
+.minus:hover {
+  color: #b5aec4;
+}
+
+/* Add to Cart Button */
+.add_to_cart_button-product-detail {
+  width: 160px;
+  margin-left: 19px;
+  font-size: 12px !important;
+}
+
+/* Product Favorite */
+.product_favorite {
+  width: 40px;
+  height: 100%;
+  margin-left: 22px;
+  border: solid 1px #e5e5e5;
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 10px;
+}
+
+
+/* Tabs */
+.tabs_section_container {
+  width: 100%;
+  padding-bottom: 80px;
+  border-bottom: solid 1px #ebebeb;
+}
+.tabs_container {
+  margin-top: 66px;
+  margin-bottom: 66px;
+}
+.tabs {
+}
+.tab {
+  margin-right: 50px;
+  cursor: pointer;
+}
+.tab:last-child {
+  margin-right: 0;
+}
+.tab span {
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #1e1e27;
+}
+.tab:hover span {
+  color: #b5aec4;
+}
+.tab.active span {
+  color: #fe4c50;
+  border-bottom: solid 1px #fe4c50;
+}
+.tab_container {
+  width: 100%;
+  display: none;
+}
+.tab_container.active {
+  display: block;
+}
+
+/* Description Tab */
+.desc_col {
+}
+.tab_title {
+  margin-bottom: 98px;
+}
+.tab_title h4 {
+  display: inline-block;
+  color: #fe4c50;
+  border-bottom: solid 1px #fe4c50;
+}
+.tab_text_block {
+  margin-bottom: 133px;
+}
+.tab_text_block p {
+  font-weight: 400;
+  margin-top: 10px;
+}
+.tab_image {
+  width: 100%;
+  margin-bottom: 131px;
+}
+.tab_image img {
+  width: 100%;
+}
+.desc_last {
+  margin-bottom: 0;
+}
+
+/* Additional Info */
+.additional_info_col p span {
+  margin-left: 22px;
+}
+.additional_info_title {
+  margin-bottom: 48px;
+}
+
+/* Reviews */
+.reviews_title {
+  margin-bottom: 58px;
+}
+.user_review_container {
+  width: 100%;
+  margin-bottom: 37px;
+}
+.reviews_col {
+  padding-right: 30px;
+}
+.user_pic {
+  width: 70px;
+  height: 70px;
+  background: #ebebeb;
+  border-radius: 50%;
+}
+.user_rating .star_rating {
+  margin-left: 5px;
+  margin-top: 13px;
+}
+.user_rating .star_rating li {
+  margin-right: -3px;
+}
+.user_rating .star_rating li i {
+  font-size: 12px;
+}
+.review {
+  padding-left: 30px;
+}
+.review_date {
+  color: #fe4c50;
+  margin-top: -4px;
+}
+.user_name {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 18px;
+}
+.review p {
+  font-weight: 400;
+}
+
+/* Add Review */
+.add_review {
+  margin-top: 94px;
+}
+#review_form > div {
+  margin-bottom: 40px;
+}
+#review_form div:nth-child(2) h1 {
+  display: inline-block;
+}
+#review_form div:nth-child(2) {
+  margin-bottom: 20px;
+}
+#review_form > div:last-child {
+  margin-bottom: 0;
+}
+.add_review h1 {
+  font-size: 18px;
+  font-weight: 500;
+}
+.form_input {
+  display: block;
+  width: 100%;
+  height: 50px;
+  border: solid 1px #e5e5e5;
+  padding-left: 20px;
+}
+.input_name {
+  margin-bottom: 19px;
+  margin-top: 31px;
+}
+.input_review {
+  display: block;
+  width: 100%;
+  border: solid 1px #e5e5e5;
+  margin-top: 23px;
+  padding-left: 20px;
+  padding-top: 13px;
+}
+.user_star_rating {
+  display: inline-block;
+  margin-left: 18px;
+}
+.user_star_rating li {
+  display: inline-block;
+  margin-right: -3px;
+  cursor: pointer;
+}
+.user_star_rating li i {
+  color: #f5c136;
+  font-size: 18px;
+}
+.review_submit_btn {
+  width: 170px;
+  border: none;
+  color: #ffffff;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.review_submit_btn:hover {
+  background: #fe4c50;
+}
