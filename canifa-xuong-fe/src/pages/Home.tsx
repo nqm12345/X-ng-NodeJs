@@ -9,6 +9,9 @@ import "../../styles/animations.css"; // Thêm file CSS chứa các hiệu ứng
 const Home = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(1000);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,19 +27,22 @@ const Home = () => {
   }, []);
 
   const filterProducts = () => {
-    if (selectedCategory === "all") {
-      return products.filter(
+    return products
+      .filter(
         (product) =>
-          product.category && product.category.title !== "Chưa phân loại"
+          product.category &&
+          (selectedCategory === "all"
+            ? product.category.title !== "Chưa phân loại"
+            : product.category.title.includes(
+                selectedCategory === "women" ? "Thời trang nữ" : "Thời trang nam"
+              ))
+      )
+      .filter(
+        (product) =>
+          product.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+          product.newprice >= minPrice &&
+          product.newprice <= maxPrice
       );
-    }
-    return products.filter(
-      (product) =>
-        product.category &&
-        product.category.title.includes(
-          selectedCategory === "women" ? "Thời trang nữ" : "Thời trang nam"
-        )
-    );
   };
 
   const handleProductClick = (productId: string) => {
@@ -82,6 +88,34 @@ const Home = () => {
                   men's
                 </li>
               </ul>
+              <div className="filter-section">
+                <input
+                  type="text"
+                  placeholder="Search by product name"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="search-input"
+                />
+                <div className="price-filter">
+                  <input
+                    type="number"
+                    value={minPrice}
+                    onChange={(e) => setMinPrice(Number(e.target.value))}
+                    className="price-input"
+                    min="0"
+                    max={maxPrice}
+                  />
+                  <span>-</span>
+                  <input
+                    type="number"
+                    value={maxPrice}
+                    onChange={(e) => setMaxPrice(Number(e.target.value))}
+                    className="price-input"
+                    min={minPrice}
+                    max="10000"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

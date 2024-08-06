@@ -11,7 +11,7 @@ import { Button, Layout, Menu, theme } from "antd";
 import { NavLink, Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { useAuth } from "../contexts/AuthContext";
-
+import "../../styles/WarningModal.scss";
 const { Header, Sider, Content } = Layout;
 
 const LayoutAdmin: React.FC = () => {
@@ -23,7 +23,7 @@ const LayoutAdmin: React.FC = () => {
   const { user } = useAuth();
   console.log(user);
   if (!user || user.role !== "admin") {
-    return <h1>Ban khong co quyen vao trang nay!</h1>;
+    return <h1 className="warning">Bạn không có quyền vào trang này!</h1>;
   }
 
   return (

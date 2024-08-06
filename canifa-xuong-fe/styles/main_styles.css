@@ -1673,3 +1673,39 @@ section
 {
 	color: #fe4c50;
 }
+
+
+.filter-section {
+	margin-top: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+  }
+  
+  .search-input {
+	width: 200px;
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 14px;
+  }
+  
+  .price-filter {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+  }
+  
+  .price-input {
+	width: 100px;
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 14px;
+  }
+  
+  .price-filter span {
+	font-size: 16px;
+  }
+  
