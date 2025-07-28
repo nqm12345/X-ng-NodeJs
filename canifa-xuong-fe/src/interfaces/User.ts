@@ -4,4 +4,7 @@ export interface User {
 	password: string;
 	confirmPass: string;
 	role?: "admin" | "member" | "guest";
+
+	username?: string; // 👈 Thêm tên người dùng
+	avatar?: string;   // 👈 Thêm ảnh đại diện (URL)
 }

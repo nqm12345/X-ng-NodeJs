@@ -4,14 +4,17 @@ import instance from "../api";
 import "../../styles/NewArrivals.scss";
 import { Product } from "../interfaces/Product";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import "../../styles/animations.css"; // Thêm file CSS chứa các hiệu ứng
+import "../../styles/animations.css";
+import ReactPaginate from "react-paginate";
 
-const Home = () => {
+const Shop = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(1000);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const productsPerPage = 8;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,20 +29,13 @@ const Home = () => {
     fetchProducts();
   }, []);
 
-  const filterProducts = () => {
-    const now = new Date();
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(now.getDate() - 7);
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [selectedCategory, searchTerm, minPrice, maxPrice]);
 
+  const filterProducts = () => {
     return products
       .filter((product) => {
-        // ✅ Kiểm tra xem createdAt có tồn tại và hợp lệ không
-        if (!product.createdAt) return false;
-        const createdDate = new Date(product.createdAt);
-        return !isNaN(createdDate.getTime()) && createdDate >= sevenDaysAgo;
-      })
-      .filter((product) => {
-        // ✅ Lọc theo category
         if (!product.category) return false;
         if (selectedCategory === "all") {
           return product.category.title !== "Chưa phân loại";
@@ -48,13 +44,20 @@ const Home = () => {
         return product.category.title.includes(isWomen ? "Thời trang nữ" : "Thời trang nam");
       })
       .filter((product) => {
-        // ✅ Lọc theo từ khóa tìm kiếm và khoảng giá
         const titleMatches = product.title.toLowerCase().includes(searchTerm.toLowerCase());
         const priceMatches = product.newprice >= minPrice && product.newprice <= maxPrice;
         return titleMatches && priceMatches;
       });
   };
 
+  const filteredProducts = filterProducts();
+  const pageCount = Math.ceil(filteredProducts.length / productsPerPage);
+  const offset = currentPage * productsPerPage;
+  const displayedProducts = filteredProducts.slice(offset, offset + productsPerPage);
+
+  const handlePageClick = (data: { selected: number }) => {
+    setCurrentPage(data.selected);
+  };
 
   const handleProductClick = (productId: string) => {
     navigate(`/product-detail/${productId}`);
@@ -65,44 +68,31 @@ const Home = () => {
       <div className="container">
         <div className="row">
           <div className="col text-center">
-            <div
-              className="section_title new_arrivals_title"
-              data-aos="fade-up"
-            >
-              <h2>Sản phẩm mới</h2>
+            <div className="section_title new_arrivals_title" data-aos="fade-up">
+              <h2 style={{ marginTop: "150px" }}>Sản phẩm</h2>
             </div>
           </div>
         </div>
 
         <div className="row align-items-center">
           <div className="col text-center">
-            <div
-              className="new_arrivals_sorting"
-              data-aos="fade-up"
-              data-aos-delay="100"
-            >
+            <div className="new_arrivals_sorting" data-aos="fade-up" data-aos-delay="100">
               <ul className="arrivals_grid_sorting clearfix button-group filters-button-group">
-                <li
-                  className={`grid_sorting_button button d-flex flex-column justify-content-center align-items-center ${selectedCategory === "all" ? "active is-checked" : ""
+                {["all", "women", "men"].map((category) => (
+                  <li
+                    key={category}
+                    className={`grid_sorting_button button d-flex flex-column justify-content-center align-items-center ${
+                      selectedCategory === category ? "active is-checked" : ""
                     }`}
-                  onClick={() => setSelectedCategory("all")}
-                >
-                  Tất cả
-                </li>
-                <li
-                  className={`grid_sorting_button button d-flex flex-column justify-content-center align-items-center ${selectedCategory === "women" ? "active is-checked" : ""
-                    }`}
-                  onClick={() => setSelectedCategory("women")}
-                >
-                  Thời trang nữ
-                </li>
-                <li
-                  className={`grid_sorting_button button d-flex flex-column justify-content-center align-items-center ${selectedCategory === "men" ? "active is-checked" : ""
-                    }`}
-                  onClick={() => setSelectedCategory("men")}
-                >
-                  Thời trang nam
-                </li>
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    {category === "all"
+                      ? "Tất cả"
+                      : category === "women"
+                      ? "Thời trang nữ"
+                      : "Thời trang nam"}
+                  </li>
+                ))}
               </ul>
               <div className="filter-section" data-aos="fade-up" data-aos-delay="200">
                 <input
@@ -138,21 +128,12 @@ const Home = () => {
 
         <div className="row">
           <div className="col">
-            <div
-              className="product-grid"
-              data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'
-            >
+            <div className="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
               <TransitionGroup component={null}>
-                {filterProducts().map((product, index) => (
-                  <CSSTransition
-                    key={product._id}
-                    timeout={300}
-                    classNames="fade"
-                  >
+                {displayedProducts.map((product, index) => (
+                  <CSSTransition key={product._id} timeout={300} classNames="fade">
                     <div
-                      key={product._id}
-                      className={`product-item ${product.category ? product.category.title : ""
-                        }`}
+                      className={`product-item ${product.category ? product.category.title : ""}`}
                       onClick={() => handleProductClick(product._id!)}
                       data-aos="zoom-in"
                       data-aos-delay={index * 100}
@@ -167,7 +148,8 @@ const Home = () => {
                             <a href="#">{product.title}</a>
                           </h6>
                           <div className="product_price">
-                            ${product.newprice} <span>${product.oldprice}</span>
+                            ${product.newprice}
+                            {product.oldprice && <span>${product.oldprice}</span>}
                           </div>
                         </div>
                       </div>
@@ -181,9 +163,34 @@ const Home = () => {
             </div>
           </div>
         </div>
+
+        {pageCount > 1 && (
+          <div className="pagination-wrapper mt-4 d-flex justify-content-center">
+            <ReactPaginate
+              previousLabel={"←"}
+              nextLabel={"→"}
+              breakLabel={"..."}
+              pageCount={pageCount}
+              marginPagesDisplayed={1}
+              pageRangeDisplayed={3}
+              onPageChange={handlePageClick}
+              containerClassName={"pagination"}
+              activeClassName={"active"}
+              pageClassName={"page-item"}
+              previousClassName={"page-item"}
+              nextClassName={"page-item"}
+              breakClassName={"page-item"}
+              pageLinkClassName={"page-link"}
+              previousLinkClassName={"page-link"}
+              nextLinkClassName={"page-link"}
+              breakLinkClassName={"page-link"}
+              forcePage={currentPage}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default Home;
+export default Shop;

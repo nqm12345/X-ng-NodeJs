@@ -1,3 +1,4 @@
+// AuthForm.tsx
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -6,7 +7,8 @@ import { useAuth } from "../contexts/AuthContext";
 import { User } from "../interfaces/User";
 import { loginSchema, registerSchema } from "../utils/validation";
 import { Link } from "react-router-dom";
-import '../../styles/authForm.scss'; // Ensure you have the corresponding CSS file
+import { useState } from "react";
+import '../../styles/authForm.scss';
 
 type Props = {
   isLogin?: boolean;
@@ -22,6 +24,9 @@ const AuthForm = ({ isLogin }: Props) => {
     resolver: zodResolver(isLogin ? loginSchema : registerSchema),
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState(false);
+
   const onSubmit = async (data: User) => {
     try {
       if (isLogin) {
@@ -36,58 +41,84 @@ const AuthForm = ({ isLogin }: Props) => {
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        alert(error.response?.data?.message || "Error!");
+        alert(error.response?.data?.message || "Đã xảy ra lỗi!");
       } else {
-        alert("An unexpected error occurred.");
+        alert("Đã xảy ra lỗi không xác định.");
       }
     }
   };
 
   return (
-    <div className="container-form">
-      <div className="left">
-        <div className="header">
-          <h2 className="animation a1">{isLogin ? "Welcome Back" : "Join Us"}</h2>
-          <h4 className="animation a2">
-            {isLogin ? "Log in to your account using email and password" : "Create your account using email and password"}
-          </h4>
-        </div>
-        <form onSubmit={handleSubmit(onSubmit)} className="form">
-          <input
-            type="email"
-            className="form-field animation a3"
-            placeholder="Email Address"
-            {...register("email", { required: "Email is required" })}
-          />
-          {errors.email && <span className="text-danger">{errors.email.message}</span>}
-          <input
-            type="password"
-            className="form-field animation a4"
-            placeholder="Password"
-            {...register("password", { required: "Password is required" })}
-          />
-          {errors.password && <span className="text-danger">{errors.password.message}</span>}
-          {!isLogin && (
-            <>
+    <div className="auth-wrapper">
+      <div className="auth-card">
+        <div className="auth-content">
+          <h2 className="title animate-fade-in">{isLogin ? "Chào mừng quay lại" : "Tạo tài khoản mới"}</h2>
+          <p className="subtitle animate-fade-in">
+            {isLogin
+              ? "Đăng nhập bằng email và mật khẩu của bạn."
+              : "Đăng ký để theo dõi những xu hướng thời trang mới nhất."}
+          </p>
+          <form onSubmit={handleSubmit(onSubmit)} className="auth-form animate-fade-in">
+            <input
+              type="email"
+              className="form-input"
+              placeholder="Nhập email của bạn"
+              {...register("email")}
+            />
+            {errors.email && <span className="error-text">{errors.email.message}</span>}
+
+            <div className="password-field">
               <input
-                type="password"
-                className="form-field animation a4"
-                placeholder="Confirm Password"
-                {...register("confirmPass", { required: "Please confirm your password" })}
+                type={showPassword ? "text" : "password"}
+                className="form-input"
+                placeholder="Nhập mật khẩu"
+                {...register("password")}
               />
-              {errors.confirmPass && <span className="text-danger">{errors.confirmPass.message}</span>}
-            </>
-          )}
-          {isLogin && (
-            <p className="animation a5">
-                 <Link to="/request-password-reset">Forgot Password?</Link>
-            </p>
-          )}
-          <button type="submit" className="animation a6">{isLogin ? "LOGIN" : "REGISTER"}</button>
-        </form>
-        {isLogin ? <Link to="/register">Register</Link> : <Link to="/login">Login</Link>}
+              <span className="toggle-password" onClick={() => setShowPassword((prev) => !prev)}>
+                {showPassword ? "🙈" : "👁️"}
+              </span>
+            </div>
+            {errors.password && <span className="error-text">{errors.password.message}</span>}
+
+            {!isLogin && (
+              <>
+                <div className="password-field">
+                  <input
+                    type={showConfirmPass ? "text" : "password"}
+                    className="form-input"
+                    placeholder="Nhập lại mật khẩu"
+                    {...register("confirmPass")}
+                  />
+                  <span className="toggle-password" onClick={() => setShowConfirmPass((prev) => !prev)}>
+                    {showConfirmPass ? "🙈" : "👁️"}
+                  </span>
+                </div>
+                {errors.confirmPass && (
+                  <span className="error-text">{errors.confirmPass.message}</span>
+                )}
+              </>
+            )}
+
+            {isLogin && (
+              <div className="form-links">
+                <Link to="/request-password-reset">Quên mật khẩu?</Link>
+              </div>
+            )}
+
+            <button type="submit" className="form-button">
+              {isLogin ? "Đăng nhập" : "Đăng ký"}
+            </button>
+          </form>
+          <div className="form-footer">
+            {isLogin ? (
+              <p>Bạn chưa có tài khoản? <Link to="/register">Đăng ký</Link></p>
+            ) : (
+              <p>Bạn đã có tài khoản? <Link to="/login">Đăng nhập</Link></p>
+            )}
+          </div>
+        </div>
+        <div className="auth-image animate-slide-in" />
       </div>
-      <div className="right" />
     </div>
   );
 };

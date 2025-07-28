@@ -10,14 +10,16 @@ import Best_Sellers from "./layouts/Best_Sellers";
 const LayoutClient = () => {
   const location = useLocation();
 
+  const isHomePage = location.pathname === "/";
+
   return (
     <>
       <Header />
-      <Main_slider />
+      {isHomePage && <Main_slider />}
       <main className="main">
         <Outlet />
       </main>
-      {location.pathname === "/" && (
+      {isHomePage && (
         <>
           <Deal_ofthe_week />
           <Best_Sellers />

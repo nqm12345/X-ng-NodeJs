@@ -285,111 +285,186 @@
 .additional_info_title {
   margin-bottom: 48px;
 }
-
-/* Reviews */
+/* === Reviews Title === */
 .reviews_title {
-  margin-bottom: 58px;
+  margin-bottom: 40px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
 }
+
+/* === User Review === */
 .user_review_container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
   width: 100%;
-  margin-bottom: 37px;
+  margin-bottom: 30px;
 }
-.reviews_col {
-  padding-right: 30px;
+
+@media (min-width: 576px) {
+  .user_review_container {
+    flex-direction: row;
+    align-items: flex-start;
+  }
 }
+
+.user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  width: 90px;
+}
+
 .user_pic {
   width: 70px;
   height: 70px;
   background: #ebebeb;
   border-radius: 50%;
-}
-.user_rating .star_rating {
-  margin-left: 5px;
-  margin-top: 13px;
-}
-.user_rating .star_rating li {
-  margin-right: -3px;
-}
-.user_rating .star_rating li i {
-  font-size: 12px;
-}
-.review {
-  padding-left: 30px;
-}
-.review_date {
-  color: #fe4c50;
-  margin-top: -4px;
-}
-.user_name {
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 18px;
-}
-.review p {
-  font-weight: 400;
+  margin-bottom: 10px;
+  overflow: hidden; /* để cắt viền ảnh dư */
 }
 
-/* Add Review */
+.user_pic img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.user_rating {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.star_rating {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+}
+
+.star_rating li {
+  list-style: none;
+}
+
+.star_rating li i {
+  font-size: 14px;
+  color: #FFD43B;
+}
+
+/* === Review Content === */
+.review {
+  flex: 1;
+}
+
+.review_date {
+  color: #fe4c50;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.user_name {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.review p {
+  font-size: 15px;
+  color: #555;
+  margin: 0;
+}
+
+/* === Add Review Form === */
 .add_review {
-  margin-top: 94px;
+  margin-top: 60px;
 }
-#review_form > div {
-  margin-bottom: 40px;
-}
-#review_form div:nth-child(2) h1 {
-  display: inline-block;
-}
-#review_form div:nth-child(2) {
-  margin-bottom: 20px;
-}
-#review_form > div:last-child {
-  margin-bottom: 0;
-}
+
 .add_review h1 {
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
+  margin-bottom: 20px;
 }
-.form_input {
-  display: block;
-  width: 100%;
-  height: 50px;
-  border: solid 1px #e5e5e5;
-  padding-left: 20px;
+
+#review_form > div {
+  margin-bottom: 30px;
 }
-.input_name {
-  margin-bottom: 19px;
-  margin-top: 31px;
-}
+
+.form_input,
 .input_review {
-  display: block;
   width: 100%;
-  border: solid 1px #e5e5e5;
-  margin-top: 23px;
-  padding-left: 20px;
-  padding-top: 13px;
+  border: 1px solid #e5e5e5;
+  border-radius: 5px;
+  padding: 12px 15px;
+  font-size: 15px;
+  outline: none;
 }
+
+.input_name {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.input_review {
+  margin-top: 10px;
+  min-height: 100px;
+  resize: vertical;
+}
+
 .user_star_rating {
-  display: inline-block;
-  margin-left: 18px;
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
 }
+
 .user_star_rating li {
-  display: inline-block;
-  margin-right: -3px;
   cursor: pointer;
 }
+
 .user_star_rating li i {
   color: #f5c136;
   font-size: 18px;
+  transition: transform 0.2s ease;
 }
+
+.user_star_rating li:hover i {
+  transform: scale(1.1);
+}
+
+/* === Submit Button === */
 .review_submit_btn {
-  width: 170px;
+  width: 160px;
+  height: 45px;
+  background-color: #fe4c50;
   border: none;
-  color: #ffffff;
-  text-transform: uppercase;
+  color: white;
   font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 3px;
+  transition: background 0.3s ease;
 }
+
 .review_submit_btn:hover {
-  background: #fe4c50;
+  background-color: #e94445;
+}
+
+/* Responsive Review Columns */
+.reviews_col,
+.add_review_col {
+  margin-bottom: 30px;
+}
+
+@media (min-width: 768px) {
+  .reviews_col {
+    padding-right: 30px;
+  }
+
+  .add_review_col {
+    padding-left: 30px;
+  }
 }

@@ -1,0 +1,377 @@
+// ==== COLORS & VARIABLES ====
+$primary: #ff6f61;
+$dark: #333;
+$white: #fff;
+$gray: #f2f2f2;
+$transition: all 0.4s ease;
+
+// ==== HEADER STRUCTURE ====
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+  background-color: $white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  animation: slideDown 0.5s ease;
+
+  .top_nav {
+    background-color: $gray;
+    padding: 0.5rem 0;
+    font-size: 14px;
+
+    .top_nav_left {
+      text-align: center;
+      text-transform: uppercase;
+      color: $dark;
+    }
+  }
+
+  .main_nav_container {
+    padding: 1rem 0;
+
+    .nav_content {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+
+      .logo_container a {
+        font-size: 24px;
+        font-weight: bold;
+        text-decoration: none;
+        color: $primary;
+
+        span {
+          color: $dark;
+        }
+      }
+
+      .navbar_menu {
+        display: flex;
+        gap: 30px;
+
+        ul {
+          display: flex;
+          list-style: none;
+          gap: 20px;
+
+          li a {
+            text-decoration: none;
+            color: $dark;
+            font-size: 16px;
+            font-weight: 500;
+            transition: $transition;
+
+            &:hover {
+              color: $primary;
+            }
+          }
+
+          // 👇 Ẩn avatar + logout trong menu ở desktop
+          .extra_user {
+            display: none;
+          }
+        }
+
+        .close_btn {
+          display: none;
+        }
+      }
+
+      .navbar_user {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+
+        .icon {
+          font-size: 18px;
+          cursor: pointer;
+
+          &:hover {
+            color: $primary;
+          }
+        }
+
+        .user_logged_in {
+          position: relative;
+
+          .dropdown_toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+
+            .user_avatar {
+              width: 32px;
+              height: 32px;
+              border-radius: 50%;
+              object-fit: cover;
+              border: 2px solid $gray;
+            }
+
+            .user_name {
+              font-size: 14px;
+              font-weight: 500;
+              color: $dark;
+              margin-top: 15px;
+            }
+          }
+
+          .dropdown_menu {
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background: $white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            min-width: 160px;
+            z-index: 100;
+            padding: 8px 0;
+            animation: fadeIn 0.3s ease;
+
+            li {
+              padding: 6px 16px;
+
+              a,
+              button {
+                font-size: 14px;
+                color: $dark;
+                text-decoration: none;
+                background: none;
+                border: none;
+                width: 100%;
+                text-align: left;
+                cursor: pointer;
+
+                &:hover {
+                  background-color: $gray;
+                  color: $primary;
+                }
+              }
+            }
+          }
+
+          .logout_btn {
+            font-size: 14px;
+            padding: 6px 12px;
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+
+            &:hover {
+              background-color: $gray;
+              color: $primary;
+            }
+          }
+
+          .admin_link {
+            color: $primary;
+            font-size: 14px;
+            text-decoration: none;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+
+        .account {
+          position: relative;
+
+          &:hover .account_selection {
+            display: block;
+            animation: fadeIn 0.3s ease;
+          }
+
+          .account_selection {
+            display: none;
+            position: absolute;
+            top: 120%;
+            right: 0;
+            background: $white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            min-width: 150px;
+            z-index: 100;
+
+            li {
+              padding: 10px 15px;
+
+              a {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 14px;
+                text-decoration: none;
+                color: $dark;
+
+                &:hover {
+                  background: $gray;
+                }
+              }
+            }
+          }
+        }
+
+        .cart {
+          position: relative;
+
+          .checkout_items {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            font-size: 12px;
+            background: $primary;
+            color: $white;
+            padding: 2px 6px;
+            border-radius: 50%;
+          }
+        }
+      }
+
+      .hamburger_container {
+        display: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .menu_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 998;
+    animation: fadeIn 0.3s ease;
+  }
+}
+
+// === RESPONSIVE ===
+@media screen and (max-width: 1180px) {
+  .header .main_nav_container .nav_content {
+    .navbar_menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 300px;
+      height: 100vh;
+      background: $white;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      padding: 3rem 2rem;
+      gap: 20px;
+      transition: $transition;
+      z-index: 999;
+
+      &.open {
+        right: 0;
+      }
+
+      ul {
+        flex-direction: column;
+        width: 100%;
+
+        li {
+          width: 100%;
+
+          a {
+            width: 100%;
+            display: block;
+            padding: 10px 0;
+            font-size: 16px;
+          }
+        }
+
+        .extra_user {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+
+          .user_avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+
+          .user_name {
+            font-size: 14px;
+            font-weight: 600;
+          }
+
+          .logout_btn {
+            font-size: 14px;
+            padding: 4px 8px;
+            border: 1px solid $dark;
+            background: none;
+            border-radius: 4px;
+
+            &:hover {
+              background: $primary;
+              color: $white;
+            }
+          }
+
+          .admin_link {
+            font-size: 14px;
+            color: $primary;
+            text-decoration: none;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+
+      .close_btn {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+      }
+    }
+
+    .hamburger_container {
+      display: block;
+    }
+
+    .navbar_user .user_logged_in {
+      display: flex;
+    }
+  }
+}
+
+// === ANIMATIONS ===
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

@@ -1,0 +1,429 @@
+// Variables
+$primary-color: #fe4c50;
+$button-color: #fe7c7f;
+$bg-gray: #f2f2f2;
+$bg-light: #f9f9f9;
+$text-dark: #1e1e27;
+$text-color: #1e1e27;
+$text-gray: #7a7a7a;
+$white: #fff;
+
+// ========== Deal of the Week ==========
+.deal_ofthe_week {
+  width: 100%;
+  margin-top: 41px;
+  background: $bg-gray;
+  padding: 60px 0;
+
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &_img {
+    flex: 1 1 50%;
+    height: 540px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      max-height: 100%;
+      width: auto;
+      object-fit: cover;
+    }
+  }
+
+  &_content {
+    flex: 1 1 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+    .section_title {
+      text-align: center;
+      position: relative;
+      margin-bottom: 30px;
+
+      h2 {
+        display: inline-block;
+        font-size: 32px;
+        font-weight: 700;
+        color: $text-dark;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: calc(100% + 13px);
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 5px;
+        background: $primary-color;
+      }
+    }
+
+    .timer {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+
+      li {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: $white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+        .timer_num {
+          font-size: 40px;
+          font-weight: 600;
+          color: $primary-color;
+        }
+
+        .timer_unit {
+          font-size: 15px;
+          font-weight: 500;
+          color: $text-gray;
+          margin-top: 8px;
+        }
+      }
+    }
+
+    .deal_ofthe_week_button {
+      background: $button-color;
+      padding: 12px 24px;
+      border-radius: 30px;
+      transition: background 0.3s ease;
+      cursor: pointer;
+
+      a {
+        color: $white;
+        text-transform: uppercase;
+        font-size: 14px;
+        font-weight: 600;
+        display: block;
+        text-align: center;
+        text-decoration: none;
+      }
+
+      &:hover {
+        background: darken($button-color, 10%);
+      }
+    }
+  }
+
+  @media (max-width: 1200px) {
+    &_img {
+      height: 460px;
+    }
+
+    &_content .timer li {
+      width: 100px;
+      height: 100px;
+
+      .timer_num {
+        font-size: 36px;
+      }
+    }
+  }
+
+  @media (max-width: 992px) {
+    .container {
+      flex-direction: column;
+    }
+
+    &_img {
+      height: 400px;
+      margin-bottom: 30px;
+    }
+
+    &_content .timer {
+      gap: 12px;
+
+      li {
+        width: 90px;
+        height: 90px;
+
+        .timer_num {
+          font-size: 32px;
+        }
+
+        .timer_unit {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    &_img {
+      height: 320px;
+    }
+
+    &_content .timer li {
+      width: 80px;
+      height: 80px;
+
+      .timer_num {
+        font-size: 28px;
+      }
+
+      .timer_unit {
+        font-size: 13px;
+      }
+    }
+
+    &_content .deal_ofthe_week_button {
+      width: 100%;
+      max-width: 200px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    padding: 40px 20px;
+
+    &_img {
+      height: 280px;
+    }
+
+    &_content {
+      .section_title h2 {
+        font-size: 26px;
+      }
+
+      .timer li {
+        width: 70px;
+        height: 70px;
+
+        .timer_num {
+          font-size: 22px;
+        }
+
+        .timer_unit {
+          font-size: 12px;
+        }
+      }
+
+      .deal_ofthe_week_button {
+        padding: 10px 20px;
+
+        a {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+}
+
+// ========== Best Sellers ==========
+$primary: #ff6f61;
+$dark: #333;
+$gray: #f5f5f5;
+$white: #fff;
+$transition: all 0.3s ease;
+
+.best_sellers {
+  background-color: $gray;
+  padding: 60px 0;
+
+  h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: $dark;
+    margin-top: 150px;
+    text-align: center;
+    position: relative;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 4px;
+      background-color: $primary;
+      margin: 12px auto 0;
+      border-radius: 2px;
+    }
+  }
+
+  .product_slider_container {
+    position: relative;
+    padding: 0 40px;
+    overflow: hidden;
+  }
+
+  .product_slider {
+    display: flex;
+    gap: 20px;
+    scroll-behavior: smooth;
+    justify-content: center; 
+    flex-wrap: wrap;  // Thêm để các item tự động xuống hàng khi không đủ chỗ
+  }
+
+  .product_slider_item {
+    flex: 0 0 23%; // Mặc định cho 4 cột trên màn hình lớn
+    height: 396px;
+  }
+
+  .product-item {
+    background-color: $white;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    transition: $transition;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+    position: relative;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+
+      .add_to_cart_btn {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    .product_image {
+      width: 100%;
+      margin-bottom: 15px;
+
+      img {
+        width: 100%;
+        height: 180px;
+        object-fit: contain;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+    }
+
+    .product_info {
+      flex-grow: 1;
+
+      .product_name {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 6px;
+
+        a {
+          color: $dark;
+          text-decoration: none;
+          transition: color 0.3s;
+
+          &:hover {
+            color: $primary;
+          }
+        }
+      }
+
+      .product_price {
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: $primary;
+        margin-bottom: 10px;
+
+        span {
+          font-size: 0.9rem;
+          color: #999;
+          text-decoration: line-through;
+          margin-left: 8px;
+          font-weight: 400;
+        }
+      }
+    }
+
+    .add_to_cart_btn {
+      background-color: $primary;
+      color: $white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 0;
+      cursor: pointer;
+      transition: $transition;
+      font-size: 0.95rem;
+      font-weight: 600;
+      opacity: 0;
+      visibility: hidden;
+      margin-top: 10px;
+
+      &:hover {
+        background-color: darken($primary, 10%);
+      }
+    }
+  }
+
+  .product_slider_nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: $primary;
+    color: $white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    transition: $transition;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+
+    &:hover {
+      background-color: darken($primary, 10%);
+    }
+  }
+
+  .product_slider_nav_left {
+    left: 10px;
+  }
+
+  .product_slider_nav_right {
+    right: 10px;
+  }
+
+  // Media Queries cho các kích thước màn hình khác nhau
+  @media (max-width: 1200px) {
+    .product_slider_item {
+      flex: 0 0 30%;  // 3 sản phẩm trên màn hình lớn (tablet)
+    }
+  }
+
+  @media (max-width: 992px) {
+    .product_slider_item {
+      flex: 0 0 45%;  // 2 sản phẩm trên màn hình tablet
+    }
+  }
+
+  @media (max-width: 768px) {
+    .product_slider_item {
+      flex: 0 0 90%;  // 1 sản phẩm mỗi hàng trên mobile
+    }
+
+    .product_slider_nav {
+      width: 30px;
+      height: 30px;
+      font-size: 14px;
+    }
+  }
+}
+

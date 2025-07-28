@@ -13,13 +13,26 @@ import Product_details from "./pages/Product_details";
 import RequestPasswordReset from "./components/auth/RequestPasswordReset";
 import ResetPassword from "./components/auth/ResetPassword";
 
+// 🆕 AOS
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { useEffect } from "react";
+import Shop from "./pages/Shop";
 
 function App() {
+	useEffect(() => {
+		AOS.init({
+			duration: 1000,
+			once: true,
+		});
+	}, []);
+
 	return (
 		<>
 			<Routes>
 				<Route path="/" element={<LayoutClient />}>
 					<Route index element={<Home />} />
+					 <Route path="shop" element={<Shop />} /> 
 					<Route path="product-detail/:id" element={<Product_details />} />
 				</Route>
 

@@ -8,6 +8,8 @@ export interface Product {
   category?: Category;
   description?: string;
   image?: string;
-  thumbnail?: string[];  // Cập nhật thành mảng
+  thumbnail?: string[];      // Danh sách ảnh
   stock?: number;
+  createdAt?: string;        // ➕ Thêm dòng này để tránh lỗi
+  updatedAt?: string;        // ➕ (Tuỳ chọn, nếu bạn dùng ở chỗ khác)
 }
