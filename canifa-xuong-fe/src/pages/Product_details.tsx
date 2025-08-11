@@ -475,7 +475,7 @@ const handleAddToCart = async () => {
                           </div>
                         </div>
                         <div className="red_button add_to_cart_button">
-                          <a href="#">Thêm vào giỏ</a>
+                          <a href="#">Xem chi tiết</a>
                         </div>
                       </div>
                     </CSSTransition>
