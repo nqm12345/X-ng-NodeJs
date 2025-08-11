@@ -1,5 +1,6 @@
 import "../../styles/single_styles.css";
 import "../../styles/single_responsive.css";
+import { toast } from "react-toastify";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faMinus, faPlus, faStar, faTruckFast } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,6 +8,7 @@ import { useEffect, useState } from "react";
 import instance from "../api";
 import { Product } from "../interfaces/Product";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { useAuth } from "../contexts/AuthContext";
 
 const Product_details = () => {
   const { id } = useParams<{ id: string }>();
@@ -20,6 +22,14 @@ const Product_details = () => {
   const [selectedThumbnail, setSelectedThumbnail] = useState<string | undefined>(undefined);
   const [activeTab, setActiveTab] = useState<string>("tab_1"); // Thêm state cho tab
   const [relatedProducts, setRelatedProducts] = useState<Product[]>([]);
+  const [quantity, setQuantity] = useState<number>(1);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
+  const { user } = useAuth();
+
+  const formatVND = (price?: number) =>
+    price ? price.toLocaleString("vi-VN") + "₫" : "";
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -55,6 +65,61 @@ const Product_details = () => {
   const handleTabClick = (tabId: string) => {
     setActiveTab(tabId);
   };
+  // 👉 Thêm vào đầu file
+
+  const increaseQuantity = () => {
+    setQuantity((prev) => prev + 1);
+  };
+
+  const decreaseQuantity = () => {
+    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+  };
+
+const handleAddToCart = async () => {
+  try {
+    // ✅ 1. Kiểm tra đăng nhập trước
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      toast.warning("Vui lòng đăng nhập để thêm vào giỏ hàng!");
+      navigate("/login");
+      return;
+    }
+
+    // ✅ 2. Kiểm tra chọn màu / size
+    const hasColor = product?.color && product.color.length > 0;
+    const hasSize = product?.size && product.size.length > 0;
+
+    if (hasColor && hasSize) {
+      if (!selectedColor || !selectedSize) {
+        toast.warning("Vui lòng chọn màu và kích cỡ!");
+        return;
+      }
+    } else if (!hasColor && hasSize) {
+      if (!selectedSize) {
+        toast.warning("Vui lòng chọn kích cỡ!");
+        return;
+      }
+    }
+
+    // ✅ 3. Gửi API thêm vào giỏ hàng
+    await instance.post(
+      "/cart",
+      {
+        productId: product?._id,
+        quantity,
+        color: hasColor ? selectedColor : undefined,
+        size: hasSize ? selectedSize : undefined,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    toast.success("Đã thêm sản phẩm vào giỏ hàng!");
+    window.dispatchEvent(new CustomEvent("cartUpdated"));
+  } catch (error) {
+    console.error(error);
+    toast.error("Lỗi khi thêm vào giỏ hàng.");
+  }
+};
 
 
 
@@ -136,12 +201,14 @@ const Product_details = () => {
                 <h2>{product.title}</h2>
                 <p>{product.description}</p>
               </div>
+
               <div className="free_delivery d-flex flex-row align-items-center justify-content-center">
                 <span><FontAwesomeIcon icon={faTruckFast} flip="horizontal" /></span>
                 <span>Giao hàng miễn phí</span>
               </div>
-              <div className="original_price">${product.oldprice}</div>
-              <div className="product_price-product-detail">${product.newprice}</div>
+              <div className="original_price">{formatVND(product.oldprice)}</div>
+              <div className="product_price-product-detail">{formatVND(product.newprice)}</div>
+
               <ul className="star_rating">
                 {[...Array(5)].map((_, index) => (
                   <li key={index}>
@@ -149,29 +216,92 @@ const Product_details = () => {
                   </li>
                 ))}
               </ul>
-              <div className="product_color">
-                <span>Chọn màu:</span>
-                <ul>
-                  <li style={{ background: "#e54e5d" }} />
-                  <li style={{ background: "#252525" }} />
-                  <li style={{ background: "#60b3f3" }} />
-                </ul>
+
+              {/* ✅ Thêm các thông tin chi tiết */}
+              <div className="product_details_info mt-3">
+                {product.brand && <p><strong>Thương hiệu:</strong> {product.brand}</p>}
+                {typeof product.stock === "number" && <p><strong>Số lượng còn:</strong> {product.stock}</p>}
+                <p>
+                  <strong>Trạng thái:</strong>{" "}
+                  <span style={{ color: product.status ? "green" : "red" }}>
+                    {product.status ? "Còn hàng" : "Hết hàng"}
+                  </span>
+                </p>
               </div>
-              <div className="quantity d-flex flex-column flex-sm-row align-items-sm-center">
+
+              {/* ✅ Màu sắc */}
+              {product.color && product.color.length > 0 && (
+                <div className="product_color">
+                  <span className="label">Chọn màu:</span>
+                  <ul className="color_list d-flex gap-2 mt-2">
+                    {product.color.map((color, index) => (
+                      <li
+                        key={index}
+                        title={color}
+                        onClick={() => setSelectedColor(color)}
+                        style={{
+                          backgroundColor: color,
+                          border: selectedColor === color ? "2px solid #000" : "1px solid #ccc",
+                          width: "30px",
+                          height: "30px",
+                          borderRadius: "50%",
+                          cursor: "pointer",
+                        }}
+                      />
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+
+
+              {/* ✅ Kích cỡ */}
+              {product.size && product.size.length > 0 && (
+                <div className="product_size mt-3">
+                  <span>Chọn kích cỡ:</span>
+                  <ul className="d-flex gap-2 mt-2">
+                    {product.size.map((size, index) => (
+                      <li
+                        key={index}
+                        onClick={() => setSelectedSize(size)}
+                        style={{
+                          border: selectedSize === size ? "2px solid #000" : "1px solid #ccc",
+                          padding: "5px 10px",
+                          borderRadius: "4px",
+                          cursor: "pointer",
+                        }}
+                      >
+                        {size}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+
+              {/* Số lượng và giỏ hàng */}
+              <div className="quantity d-flex flex-column flex-sm-row align-items-sm-center mt-4">
                 <span>Số lượng:</span>
                 <div className="quantity_selector">
-                  <span className="minus"><FontAwesomeIcon icon={faMinus} /></span>
-                  <span id="quantity_value">1</span>
-                  <span className="plus"><FontAwesomeIcon icon={faPlus} /></span>
+                  <span className="minus" onClick={decreaseQuantity}>
+                    <FontAwesomeIcon icon={faMinus} />
+                  </span>
+                  <span id="quantity_value">{quantity}</span>
+                  <span className="plus" onClick={increaseQuantity}>
+                    <FontAwesomeIcon icon={faPlus} />
+                  </span>
                 </div>
-                <div className="red_button add_to_cart_button-product-detail">
+                <div className="red_button add_to_cart_button-product-detail" onClick={handleAddToCart}>
                   <a href="#">Thêm vào giỏ</a>
                 </div>
+
                 <div className="product_favorite">
                   <FontAwesomeIcon icon={faHeart} beat style={{ color: "#CCC" }} />
                 </div>
               </div>
+
             </div>
+
           </div>
         </div>
       </div>
@@ -339,8 +469,8 @@ const Product_details = () => {
                               <a href="#">{product.title}</a>
                             </h6>
                             <div className="product_price">
-                              ${product.newprice}
-                              {product.oldprice && <span>${product.oldprice}</span>}
+                              {formatVND(product.newprice)}
+                              {product.oldprice && <span>{formatVND(product.oldprice)}</span>}
                             </div>
                           </div>
                         </div>

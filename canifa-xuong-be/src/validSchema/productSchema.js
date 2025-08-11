@@ -33,5 +33,25 @@ export const productSchema = Joi.object({
   stock: Joi.number().min(0).optional().messages({
     "number.base": "Stock must be a number",
     "number.min": "Stock minimum value is 0",
-  }), // Make stock optional
+  }),
+
+  // ✅ Đã đổi từ `colors` → `color`
+  color: Joi.array().items(Joi.string()).optional().messages({
+    "array.base": "Color must be an array of strings",
+    "string.base": "Each color must be a string",
+  }),
+
+  size: Joi.array().items(Joi.string()).required().messages({
+    "array.base": "Size must be an array of strings",
+    "string.base": "Each size must be a string",
+    "any.required": "At least one size is required",
+  }),
+
+  brand: Joi.string().optional().messages({
+    "string.base": "Brand must be a string",
+  }),
+
+  status: Joi.boolean().optional().messages({
+    "boolean.base": "Status must be true or false",
+  }),
 });

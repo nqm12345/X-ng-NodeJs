@@ -6,9 +6,12 @@ export const productSchema = z.object({
   oldprice: z.number().min(0, { message: "Giá cũ không được nhỏ hơn 0" }).optional(),
   description: z.string().optional(),
   category: z.string().optional(),
-  image: z.string().url({ message: "Đường dẫn hình ảnh phải là một URL hợp lệ" }).optional(),
-  thumbnail: z.array(z.string().url({ message: "Đường dẫn ảnh nhỏ phải là URL hợp lệ" })).optional(),
-  stock: z.number().min(0, { message: "Số lượng tồn kho không được nhỏ hơn 0" }).optional(),
+  brand: z.string().optional(),
+  size: z.array(z.string()).nonempty({ message: "Vui lòng chọn ít nhất một size" }),
+  color: z.array(z.string()).optional(),
+  image: z.string().url({ message: "Ảnh chính phải là một URL hợp lệ" }).optional(),
+  thumbnail: z.array(z.string().url({ message: "Ảnh phụ phải là URL hợp lệ" })).optional(),
+  stock: z.number().min(0, { message: "Tồn kho không được nhỏ hơn 0" }).optional(),
 });
 
 export const categorySchema = z.object({

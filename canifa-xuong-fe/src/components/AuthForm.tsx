@@ -6,7 +6,7 @@ import instance from "../api";
 import { useAuth } from "../contexts/AuthContext";
 import { User } from "../interfaces/User";
 import { loginSchema, registerSchema } from "../utils/validation";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import '../../styles/authForm.scss';
 
@@ -16,6 +16,7 @@ type Props = {
 
 const AuthForm = ({ isLogin }: Props) => {
   const { login: contextLogin } = useAuth();
+  const navigate = useNavigate(); // ✅ Thêm useNavigate
   const {
     handleSubmit,
     formState: { errors },
@@ -31,7 +32,15 @@ const AuthForm = ({ isLogin }: Props) => {
     try {
       if (isLogin) {
         const res = await instance.post(`/auth/login`, data);
-        contextLogin(res.data.accessToken, res.data.user);
+        const user = res.data.user;
+        contextLogin(res.data.accessToken, user);
+
+        // ✅ Điều hướng theo role
+        if (user.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
       } else {
         const res = await instance.post(`/auth/register`, {
           email: data.email,

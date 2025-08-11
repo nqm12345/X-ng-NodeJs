@@ -14,6 +14,14 @@ const Home = () => {
   const [maxPrice, setMaxPrice] = useState<number>(1000);
   const navigate = useNavigate();
 
+  // ✅ Hàm format tiền VNĐ
+  const formatVND = (price: number) => {
+    return new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+  };
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -29,11 +37,11 @@ const Home = () => {
   const filterProducts = () => {
     const now = new Date();
     const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(now.getDate() - 7);
+    sevenDaysAgo.setDate(now.getDate() - 30);
 
     return products
       .filter((product) => {
-        // ✅ Kiểm tra xem createdAt có tồn tại và hợp lệ không
+        // ✅ Kiểm tra createdAt
         if (!product.createdAt) return false;
         const createdDate = new Date(product.createdAt);
         return !isNaN(createdDate.getTime()) && createdDate >= sevenDaysAgo;
@@ -41,20 +49,28 @@ const Home = () => {
       .filter((product) => {
         // ✅ Lọc theo category
         if (!product.category) return false;
+
+        const categoryTitle =
+          typeof product.category === "string"
+            ? product.category
+            : product.category.title;
+
         if (selectedCategory === "all") {
-          return product.category.title !== "Chưa phân loại";
+          return categoryTitle !== "Chưa phân loại";
         }
         const isWomen = selectedCategory === "women";
-        return product.category.title.includes(isWomen ? "Thời trang nữ" : "Thời trang nam");
+        return categoryTitle.includes(isWomen ? "Thời trang nữ" : "Thời trang nam");
       })
       .filter((product) => {
-        // ✅ Lọc theo từ khóa tìm kiếm và khoảng giá
-        const titleMatches = product.title.toLowerCase().includes(searchTerm.toLowerCase());
-        const priceMatches = product.newprice >= minPrice && product.newprice <= maxPrice;
+        // ✅ Lọc theo từ khóa và giá
+        const titleMatches = product.title
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase());
+        const priceMatches =
+          product.newprice >= minPrice && product.newprice <= maxPrice;
         return titleMatches && priceMatches;
       });
   };
-
 
   const handleProductClick = (productId: string) => {
     navigate(`/product-detail/${productId}`);
@@ -74,6 +90,7 @@ const Home = () => {
           </div>
         </div>
 
+        {/* Bộ lọc */}
         <div className="row align-items-center">
           <div className="col text-center">
             <div
@@ -83,28 +100,37 @@ const Home = () => {
             >
               <ul className="arrivals_grid_sorting clearfix button-group filters-button-group">
                 <li
-                  className={`grid_sorting_button button d-flex flex-column justify-content-center align-items-center ${selectedCategory === "all" ? "active is-checked" : ""
-                    }`}
+                  className={`grid_sorting_button button d-flex flex-column justify-content-center align-items-center ${
+                    selectedCategory === "all" ? "active is-checked" : ""
+                  }`}
                   onClick={() => setSelectedCategory("all")}
                 >
                   Tất cả
                 </li>
                 <li
-                  className={`grid_sorting_button button d-flex flex-column justify-content-center align-items-center ${selectedCategory === "women" ? "active is-checked" : ""
-                    }`}
+                  className={`grid_sorting_button button d-flex flex-column justify-content-center align-items-center ${
+                    selectedCategory === "women" ? "active is-checked" : ""
+                  }`}
                   onClick={() => setSelectedCategory("women")}
                 >
                   Thời trang nữ
                 </li>
                 <li
-                  className={`grid_sorting_button button d-flex flex-column justify-content-center align-items-center ${selectedCategory === "men" ? "active is-checked" : ""
-                    }`}
+                  className={`grid_sorting_button button d-flex flex-column justify-content-center align-items-center ${
+                    selectedCategory === "men" ? "active is-checked" : ""
+                  }`}
                   onClick={() => setSelectedCategory("men")}
                 >
                   Thời trang nam
                 </li>
               </ul>
-              <div className="filter-section" data-aos="fade-up" data-aos-delay="200">
+
+              {/* Ô tìm kiếm và lọc giá */}
+              <div
+                className="filter-section"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
                 <input
                   type="text"
                   placeholder="Tìm kiếm theo tên sản phẩm"
@@ -136,6 +162,7 @@ const Home = () => {
           </div>
         </div>
 
+        {/* Danh sách sản phẩm */}
         <div className="row">
           <div className="col">
             <div
@@ -150,9 +177,13 @@ const Home = () => {
                     classNames="fade"
                   >
                     <div
-                      key={product._id}
-                      className={`product-item ${product.category ? product.category.title : ""
-                        }`}
+                      className={`product-item ${
+                        product.category
+                          ? typeof product.category === "string"
+                            ? product.category
+                            : product.category.title
+                          : ""
+                      }`}
                       onClick={() => handleProductClick(product._id!)}
                       data-aos="zoom-in"
                       data-aos-delay={index * 100}
@@ -167,12 +198,15 @@ const Home = () => {
                             <a href="#">{product.title}</a>
                           </h6>
                           <div className="product_price">
-                            ${product.newprice} <span>${product.oldprice}</span>
+                            {formatVND(product.newprice)}
+                            {product.oldprice && (
+                              <span>{formatVND(product.oldprice)}</span>
+                            )}
                           </div>
                         </div>
                       </div>
                       <div className="red_button add_to_cart_button">
-                        <a href="#">Thêm vào giỏ</a>
+                        <a href="#">Xem chi tiết</a>
                       </div>
                     </div>
                   </CSSTransition>
